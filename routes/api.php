@@ -1,8 +1,18 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ProductoApiController;
+use App\Http\Controllers\Api\ClienteApiController;
+use App\Http\Controllers\Api\UsuarioApiController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Ruta pública: login de la API (devuelve el token)
+Route::post('/login', [AuthController::class, 'apiLogin']);
+
+// Rutas protegidas: requieren token válido (Sanctum)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'apiLogout']);
+    Route::apiResource('productos', ProductoApiController::class);
+    Route::apiResource('clientes', ClienteApiController::class);
+    Route::apiResource('usuarios', UsuarioApiController::class);
+});
