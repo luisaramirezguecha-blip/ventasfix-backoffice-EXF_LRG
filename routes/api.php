@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'apiLogin']);
 
 // Rutas protegidas: requieren token válido (Sanctum)
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/logout', [AuthController::class, 'apiLogout']);
     Route::apiResource('productos', ProductoApiController::class);
     Route::apiResource('clientes', ClienteApiController::class);
