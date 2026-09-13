@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Producto - VentasFix</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <h1>Editar Producto</h1>

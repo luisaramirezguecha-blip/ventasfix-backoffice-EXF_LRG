@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalle Cliente - VentasFix</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <h1>Detalle del Cliente</h1>

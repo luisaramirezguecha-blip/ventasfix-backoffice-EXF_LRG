@@ -1,51 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Clientes - VentasFix</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clientes — VentasFix</title>
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <h1>Listado de Clientes</h1>
+<canvas id="ember-canvas"></canvas>
+
+<div class="theme-toggle-wrap">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+    <span class="knob">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+    </span>
+  </button>
+</div>
+
+<div class="page-shell">
+  <div class="page-card manuscript-frame" style="max-width: 960px;">
+    <div class="ogival">
+      <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 78V40C4 18 16 4 32 4C48 4 60 18 60 40V78" stroke="var(--color-bronze)" stroke-width="1.3"/>
+        <path d="M12 78V42C12 24 20 12 32 12C44 12 52 24 52 42V78" stroke="var(--color-bronze-dim)" stroke-width="1"/>
+        <circle cx="32" cy="30" r="2.4" fill="var(--color-bronze)"/>
+      </svg>
+    </div>
+
+    <h1 class="page-title">Listado de Clientes</h1>
 
     @if (session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
+      <div class="flash-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('clientes.create') }}">+ Nuevo Cliente</a>
+    <div class="top-bar">
+      <a href="{{ route('clientes.create') }}" class="link-bronze">+ Nuevo cliente</a>
+      <a href="{{ route('dashboard') }}" class="link-bronze">&larr; Volver al dashboard</a>
+    </div>
 
-    <table border="1" cellpadding="8">
+    <div class="table-wrap">
+      <table class="vf-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>RUT Empresa</th>
-                <th>Razón Social</th>
-                <th>Rubro</th>
-                <th>Teléfono</th>
-                <th>Contacto</th>
-                <th>Acciones</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>RUT empresa</th>
+            <th>Razón social</th>
+            <th>Rubro</th>
+            <th>Teléfono</th>
+            <th>Contacto</th>
+            <th>Acciones</th>
+          </tr>
         </thead>
         <tbody>
-            @foreach ($clientes as $cliente)
-                <tr>
-                    <td>{{ $cliente->id }}</td>
-                    <td>{{ $cliente->rut_empresa }}</td>
-                    <td>{{ $cliente->razon_social }}</td>
-                    <td>{{ $cliente->rubro }}</td>
-                    <td>{{ $cliente->telefono }}</td>
-                    <td>{{ $cliente->nombre_contacto }}</td>
-                    <td>
-                        <a href="{{ route('clientes.show', $cliente) }}">Ver</a>
-                        <a href="{{ route('clientes.edit', $cliente) }}">Editar</a>
-                        <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este cliente?')">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+          @forelse ($clientes as $cliente)
+            <tr>
+              <td>{{ $cliente->id }}</td>
+              <td>{{ $cliente->rut_empresa }}</td>
+              <td>{{ $cliente->razon_social }}</td>
+              <td>{{ $cliente->rubro }}</td>
+              <td>{{ $cliente->telefono }}</td>
+              <td>{{ $cliente->nombre_contacto }}</td>
+              <td>
+                <a href="{{ route('clientes.show', $cliente) }}" class="link-bronze action-link">Ver</a>
+                <a href="{{ route('clientes.edit', $cliente) }}" class="link-bronze action-link">Editar</a>
+                <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" style="display:inline;">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="action-btn" onclick="return confirm('¿Seguro que deseas eliminar este cliente?')">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="7" style="text-align:center; color: var(--color-ink-muted);">
+                Aún no hay clientes registrados.
+              </td>
+            </tr>
+          @endforelse
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
+</div>
 </body>
 </html>
