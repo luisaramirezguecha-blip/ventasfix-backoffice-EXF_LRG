@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
@@ -43,6 +44,26 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+    #[OA\Post(
+        path: "/api/login",
+        summary: "Iniciar sesión y obtener un token de acceso",
+        tags: ["Autenticación"],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["email", "password"],
+                properties: [
+                    new OA\Property(property: "email", type: "string", example: "usuario@ventasfix.cl"),
+                    new OA\Property(property: "password", type: "string", example: "contraseña123"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 200, description: "Login exitoso, devuelve el token"),
+            new OA\Response(response: 401, description: "Credenciales incorrectas"),
+            new OA\Response(response: 422, description: "Error de validación")
+        ]
+    )]
     // Login para la API: devuelve un token en vez de redirigir
     public function apiLogin(Request $request)
     {
