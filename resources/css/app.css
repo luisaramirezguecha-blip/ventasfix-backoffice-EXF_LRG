@@ -350,3 +350,45 @@ html.dark .theme-toggle .knob { transform: translateX(20px); }
   #ember-canvas { display: none; }
   * { transition: none !important; animation: none !important; }
 }
+/* -------------------- Fix: fuente del textarea -------------------- */
+textarea {
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* -------------------- Responsive: móvil y tablet -------------------- */
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 1.5rem 1rem;
+  }
+  .page-card {
+    padding: 1.6rem 1.4rem;
+  }
+  .auth-card {
+    padding: 1.8rem 1.4rem;
+  }
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+  .nav-links {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: center;
+  }
+  .top-bar {
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .page-title {
+    font-size: 1.6rem;
+  }
+  .theme-toggle-wrap {
+    top: 1rem;
+    right: 1rem;
+  }
+  .vf-table th, .vf-table td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.78rem;
+  }
+}

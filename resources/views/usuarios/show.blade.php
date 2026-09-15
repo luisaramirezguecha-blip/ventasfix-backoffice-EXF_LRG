@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle Usuario - VentasFix</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <h1>Detalle del Usuario</h1>
-
-    <p><strong>RUT:</strong> {{ $usuario->rut }}</p>
-    <p><strong>Nombre:</strong> {{ $usuario->nombre }}</p>
-    <p><strong>Apellido:</strong> {{ $usuario->apellido }}</p>
-    <p><strong>Email:</strong> {{ $usuario->email }}</p>
-
-    <a href="{{ route('usuarios.index') }}">Volver al listado</a>
-</body>
-</html>
+<x-layouts.app title="Detalle Usuario — VentasFix">
+    <x-organisms.page-frame title="Detalle del Usuario">
+        <div class="table-wrap">
+            <table class="vf-table">
+                <tbody>
+                    <tr><th>RUT</th><td>{{ $usuario->rut }}</td></tr>
+                    <tr><th>Nombre</th><td>{{ $usuario->nombre }}</td></tr>
+                    <tr><th>Apellido</th><td>{{ $usuario->apellido }}</td></tr>
+                    <tr><th>Email</th><td>{{ $usuario->email }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="text-align:center; margin-top:1.5rem;">
+            <a href="{{ route('usuarios.index') }}" class="link-bronze">&larr; Volver al listado</a>
+        </p>
+    </x-organisms.page-frame>
+</x-layouts.app>

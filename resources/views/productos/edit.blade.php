@@ -1,60 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Producto - VentasFix</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <h1>Editar Producto</h1>
-
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('productos.update', $producto) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <label>SKU:</label><br>
-        <input type="text" name="sku" value="{{ old('sku', $producto->sku) }}"><br><br>
-
-        <label>Nombre:</label><br>
-        <input type="text" name="nombre" value="{{ old('nombre', $producto->nombre) }}"><br><br>
-
-        <label>Descripción corta:</label><br>
-        <input type="text" name="descripcion_corta" value="{{ old('descripcion_corta', $producto->descripcion_corta) }}"><br><br>
-
-        <label>Descripción larga:</label><br>
-        <textarea name="descripcion_larga">{{ old('descripcion_larga', $producto->descripcion_larga) }}</textarea><br><br>
-
-        <label>Imagen:</label><br>
-        <input type="text" name="imagen" value="{{ old('imagen', $producto->imagen) }}"><br><br>
-
-        <label>Precio neto:</label><br>
-        <input type="number" step="0.01" name="precio_neto" value="{{ old('precio_neto', $producto->precio_neto) }}"><br><br>
-
-        <label>Stock actual:</label><br>
-        <input type="number" name="stock_actual" value="{{ old('stock_actual', $producto->stock_actual) }}"><br><br>
-
-        <label>Stock mínimo:</label><br>
-        <input type="number" name="stock_minimo" value="{{ old('stock_minimo', $producto->stock_minimo) }}"><br><br>
-
-        <label>Stock bajo:</label><br>
-        <input type="number" name="stock_bajo" value="{{ old('stock_bajo', $producto->stock_bajo) }}"><br><br>
-
-        <label>Stock alto:</label><br>
-        <input type="number" name="stock_alto" value="{{ old('stock_alto', $producto->stock_alto) }}"><br><br>
-
-        <button type="submit">Actualizar</button>
-    </form>
-
-    <a href="{{ route('productos.index') }}">Volver al listado</a>
-</body>
-</html
+<x-layouts.app title="Editar Producto — VentasFix">
+    <x-organisms.page-frame title="Editar Producto">
+        <form action="{{ route('productos.update', $producto) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <x-molecules.field label="SKU" name="sku" :value="$producto->sku" />
+            <x-molecules.field label="Nombre" name="nombre" :value="$producto->nombre" />
+            <x-molecules.field label="Descripción corta" name="descripcion_corta" :value="$producto->descripcion_corta" />
+            <x-molecules.field label="Descripción larga" name="descripcion_larga" type="textarea" :value="$producto->descripcion_larga" />
+            <x-molecules.field label="Imagen" name="imagen" :value="$producto->imagen" />
+            <x-molecules.field label="Precio neto" name="precio_neto" type="number" step="0.01" :value="$producto->precio_neto" />
+            <x-molecules.field label="Stock actual" name="stock_actual" type="number" :value="$producto->stock_actual" />
+            <x-molecules.field label="Stock mínimo" name="stock_minimo" type="number" :value="$producto->stock_minimo" />
+            <x-molecules.field label="Stock bajo" name="stock_bajo" type="number" :value="$producto->stock_bajo" />
+            <x-molecules.field label="Stock alto" name="stock_alto" type="number" :value="$producto->stock_alto" />
+            <x-atoms.button>Actualizar</x-atoms.button>
+        </form>
+        <p style="text-align:center; margin-top:1.5rem;">
+            <a href="{{ route('productos.index') }}" class="link-bronze">&larr; Volver al listado</a>
+        </p>
+    </x-organisms.page-frame>
+</x-layouts.app>

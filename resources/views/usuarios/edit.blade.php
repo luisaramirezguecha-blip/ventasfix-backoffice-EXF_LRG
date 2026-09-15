@@ -1,45 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Usuario - VentasFix</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <h1>Editar Usuario</h1>
-
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('usuarios.update', $usuario) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <label>RUT:</label><br>
-        <input type="text" name="rut" value="{{ old('rut', $usuario->rut) }}"><br><br>
-
-        <label>Nombre:</label><br>
-        <input type="text" name="nombre" value="{{ old('nombre', $usuario->nombre) }}"><br><br>
-
-        <label>Apellido:</label><br>
-        <input type="text" name="apellido" value="{{ old('apellido', $usuario->apellido) }}"><br><br>
-
-        <label>Email (debe terminar en @ventasfix.cl):</label><br>
-        <input type="email" name="email" value="{{ old('email', $usuario->email) }}"><br><br>
-
-        <label>Nueva contraseña (dejar vacío para no cambiarla):</label><br>
-        <input type="password" name="password"><br><br>
-
-        <button type="submit">Actualizar</button>
-    </form>
-
-    <a href="{{ route('usuarios.index') }}">Volver al listado</a>
-</body>
-</html>
+<x-layouts.app title="Editar Usuario — VentasFix">
+    <x-organisms.page-frame title="Editar Usuario">
+        <form action="{{ route('usuarios.update', $usuario) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <x-molecules.field label="RUT" name="rut" :value="$usuario->rut" />
+            <x-molecules.field label="Nombre" name="nombre" :value="$usuario->nombre" />
+            <x-molecules.field label="Apellido" name="apellido" :value="$usuario->apellido" />
+            <x-molecules.field label="Email" name="email" type="email" :value="$usuario->email" />
+            <x-molecules.field label="Nueva contraseña (opcional)" name="password" type="password" />
+            <x-atoms.button>Actualizar</x-atoms.button>
+        </form>
+        <p style="text-align:center; margin-top:1.5rem;">
+            <a href="{{ route('usuarios.index') }}" class="link-bronze">&larr; Volver al listado</a>
+        </p>
+    </x-organisms.page-frame>
+</x-layouts.app>

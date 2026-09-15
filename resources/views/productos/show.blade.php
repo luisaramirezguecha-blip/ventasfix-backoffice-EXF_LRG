@@ -1,25 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle Producto - VentasFix</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <h1>Detalle del Producto</h1>
-
-    <p><strong>SKU:</strong> {{ $producto->sku }}</p>
-    <p><strong>Nombre:</strong> {{ $producto->nombre }}</p>
-    <p><strong>Descripción corta:</strong> {{ $producto->descripcion_corta }}</p>
-    <p><strong>Descripción larga:</strong> {{ $producto->descripcion_larga }}</p>
-    <p><strong>Imagen:</strong> {{ $producto->imagen }}</p>
-    <p><strong>Precio neto:</strong> {{ $producto->precio_neto }}</p>
-    <p><strong>Precio venta (con IVA):</strong> {{ $producto->precio_venta }}</p>
-    <p><strong>Stock actual:</strong> {{ $producto->stock_actual }}</p>
-    <p><strong>Stock mínimo:</strong> {{ $producto->stock_minimo }}</p>
-    <p><strong>Stock bajo:</strong> {{ $producto->stock_bajo }}</p>
-    <p><strong>Stock alto:</strong> {{ $producto->stock_alto }}</p>
-
-    <a href="{{ route('productos.index') }}">Volver al listado</a>
-</body>
-</html>
+<x-layouts.app title="Detalle Producto — VentasFix">
+    <x-organisms.page-frame title="Detalle del Producto">
+        <div class="table-wrap">
+            <table class="vf-table">
+                <tbody>
+                    <tr><th>SKU</th><td>{{ $producto->sku }}</td></tr>
+                    <tr><th>Nombre</th><td>{{ $producto->nombre }}</td></tr>
+                    <tr><th>Descripción corta</th><td>{{ $producto->descripcion_corta }}</td></tr>
+                    <tr><th>Descripción larga</th><td>{{ $producto->descripcion_larga }}</td></tr>
+                    <tr><th>Imagen</th><td>{{ $producto->imagen }}</td></tr>
+                    <tr><th>Precio neto</th><td>{{ $producto->precio_neto }}</td></tr>
+                    <tr><th>Precio venta (con IVA)</th><td>{{ $producto->precio_venta }}</td></tr>
+                    <tr><th>Stock actual</th><td>{{ $producto->stock_actual }}</td></tr>
+                    <tr><th>Stock mínimo</th><td>{{ $producto->stock_minimo }}</td></tr>
+                    <tr><th>Stock bajo</th><td>{{ $producto->stock_bajo }}</td></tr>
+                    <tr><th>Stock alto</th><td>{{ $producto->stock_alto }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="text-align:center; margin-top:1.5rem;">
+            <a href="{{ route('productos.index') }}" class="link-bronze">&larr; Volver al listado</a>
+        </p>
+    </x-organisms.page-frame>
+</x-layouts.app>

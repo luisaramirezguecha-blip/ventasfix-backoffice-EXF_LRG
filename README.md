@@ -256,29 +256,6 @@ Explora todos los endpoints, sus esquemas y pruébalos directamente desde
 
 ---
 
-## Troubleshooting rápido
-
-| Problema | Causa habitual | Solución |
-|---|---|---|
-| `Required @OA\Info() not found` | Uso de comentarios `/** @OA\... */` en vez de atributos PHP 8 | Migrar a `use OpenApi\Attributes as OA;` y sintaxis `#[OA\...]` |
-| Redirecciones o datos incorrectos en formularios web | Nombres de ruta duplicados entre `web.php` y `api.php` | Prefijar los nombres de las rutas API con `api.` |
-| `401 Unauthorized` con token válido | "Bearer Bearer" duplicado en Swagger UI | Pegar solo el token en el campo "Authorize", sin escribir "Bearer" |
-| `Undefined variable $clientes` en `create.blade.php` | Contenido de otra vista pegado por error | Revisar que cada vista tenga el contenido correcto (formulario vs. listado) |
-| `textarea` con fuente distinta al resto del formulario | Regla CSS `input, button { font-family: inherit; }` no incluye `textarea` | Agregar `textarea { font-family: inherit; resize: vertical; }` |
-
----
-
-## Pendientes antes de la entrega
-
-- [ ] Confirmar que el proyecto parte del template oficial descargado del
-      Drive (y no de un Laravel limpio).
-- [ ] Grabar el video del sistema web (máx. 10 min) — `ExF_Sistema_apellido_nombre`.
-- [ ] Grabar el video de la API (máx. 10 min) — `EXF_API_apellido_nombre`.
-- [ ] Subir ambos videos a una nube con acceso por enlace.
-- [ ] Comprimir el proyecto final como `EXF_APELLIDO_NOMBRE`.
-
----
-
 ## Licencia
 
 Proyecto académico desarrollado como parte de la evaluación de Desarrollo de

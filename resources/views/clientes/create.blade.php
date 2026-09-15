@@ -1,52 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Clientes - VentasFix</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <h1>Nuevo Cliente</h1>
-
-    @if (session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
-    @endif
-
-    <a href="{{ route('clientes.create') }}">+ Nuevo Cliente</a>
-
-    <table border="1" cellpadding="8">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>RUT Empresa</th>
-                <th>Razón Social</th>
-                <th>Rubro</th>
-                <th>Teléfono</th>
-                <th>Contacto</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($clientes as $cliente)
-                <tr>
-                    <td>{{ $cliente->id }}</td>
-                    <td>{{ $cliente->rut_empresa }}</td>
-                    <td>{{ $cliente->razon_social }}</td>
-                    <td>{{ $cliente->rubro }}</td>
-                    <td>{{ $cliente->telefono }}</td>
-                    <td>{{ $cliente->nombre_contacto }}</td>
-                    <td>
-                        <a href="{{ route('clientes.show', $cliente) }}">Ver</a>
-                        <a href="{{ route('clientes.edit', $cliente) }}">Editar</a>
-                        <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este cliente?')">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</body>
-</html>
+<x-layouts.app title="Nuevo Cliente — VentasFix">
+    <x-organisms.page-frame title="Nuevo Cliente">
+        <form action="{{ route('clientes.store') }}" method="POST">
+            @csrf
+            <x-molecules.field label="RUT Empresa" name="rut_empresa" />
+            <x-molecules.field label="Rubro" name="rubro" />
+            <x-molecules.field label="Razón Social" name="razon_social" />
+            <x-molecules.field label="Teléfono" name="telefono" />
+            <x-molecules.field label="Dirección" name="direccion" type="textarea" />
+            <x-molecules.field label="Nombre de contacto" name="nombre_contacto" />
+            <x-molecules.field label="Email de contacto" name="email_contacto" type="email" />
+            <x-atoms.button>Guardar</x-atoms.button>
+        </form>
+        <p style="text-align:center; margin-top:1.5rem;">
+            <a href="{{ route('clientes.index') }}" class="link-bronze">&larr; Volver al listado</a>
+        </p>
+    </x-organisms.page-frame>
+</x-layouts.app>

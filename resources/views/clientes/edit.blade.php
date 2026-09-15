@@ -1,51 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Cliente - VentasFix</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <h1>Editar Cliente</h1>
-
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('clientes.update', $cliente) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <label>RUT Empresa:</label><br>
-        <input type="text" name="rut_empresa" value="{{ old('rut_empresa', $cliente->rut_empresa) }}"><br><br>
-
-        <label>Rubro:</label><br>
-        <input type="text" name="rubro" value="{{ old('rubro', $cliente->rubro) }}"><br><br>
-
-        <label>Razón Social:</label><br>
-        <input type="text" name="razon_social" value="{{ old('razon_social', $cliente->razon_social) }}"><br><br>
-
-        <label>Teléfono:</label><br>
-        <input type="text" name="telefono" value="{{ old('telefono', $cliente->telefono) }}"><br><br>
-
-        <label>Dirección:</label><br>
-        <input type="text" name="direccion" value="{{ old('direccion', $cliente->direccion) }}"><br><br>
-
-        <label>Nombre de contacto:</label><br>
-        <input type="text" name="nombre_contacto" value="{{ old('nombre_contacto', $cliente->nombre_contacto) }}"><br><br>
-
-        <label>Email de contacto:</label><br>
-        <input type="email" name="email_contacto" value="{{ old('email_contacto', $cliente->email_contacto) }}"><br><br>
-
-        <button type="submit">Actualizar</button>
-    </form>
-
-    <a href="{{ route('clientes.index') }}">Volver al listado</a>
-</body>
-</html>
+<x-layouts.app title="Editar Cliente — VentasFix">
+    <x-organisms.page-frame title="Editar Cliente">
+        <form action="{{ route('clientes.update', $cliente) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <x-molecules.field label="RUT Empresa" name="rut_empresa" :value="$cliente->rut_empresa" />
+            <x-molecules.field label="Rubro" name="rubro" :value="$cliente->rubro" />
+            <x-molecules.field label="Razón Social" name="razon_social" :value="$cliente->razon_social" />
+            <x-molecules.field label="Teléfono" name="telefono" :value="$cliente->telefono" />
+            <x-molecules.field label="Dirección" name="direccion" type="textarea" :value="$cliente->direccion" />
+            <x-molecules.field label="Nombre de contacto" name="nombre_contacto" :value="$cliente->nombre_contacto" />
+            <x-molecules.field label="Email de contacto" name="email_contacto" type="email" :value="$cliente->email_contacto" />
+            <x-atoms.button>Actualizar</x-atoms.button>
+        </form>
+        <p style="text-align:center; margin-top:1.5rem;">
+            <a href="{{ route('clientes.index') }}" class="link-bronze">&larr; Volver al listado</a>
+        </p>
+    </x-organisms.page-frame>
+</x-layouts.app>
