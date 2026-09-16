@@ -16,7 +16,7 @@ applyStoredTheme();
 // Exponer globalmente porque el HTML usa onclick="toggleTheme()"
 window.toggleTheme = toggleTheme;
 
-// ---------------- Partículas tipo ascuas / polvo flotante ----------------
+// Partículas tipo ascuas / polvo flotante 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('ember-canvas');
   if (!canvas) return;

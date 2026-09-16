@@ -1,4 +1,3 @@
-// ===== THEME TOGGLE (Tailwind: clase .dark en <html>) =====
 (function () {
   const root = document.documentElement;
   const saved = localStorage.getItem('ventasfix-theme');
@@ -11,7 +10,7 @@
   };
 })();
 
-// ===== SIDEBAR ACCORDION =====
+// SIDEBAR ACCORDION
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.accordion-trigger').forEach((trigger) => {
     trigger.addEventListener('click', () => {
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ===== MODAL =====
+  //  MODAL 
   document.querySelectorAll('[data-modal-open]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const modal = document.getElementById(btn.getAttribute('data-modal-open'));
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ===== MOBILE SIDEBAR =====
+  //  MOBILE SIDEBAR
   const sidebarToggle = document.getElementById('sidebar-toggle');
   const sidebar = document.querySelector('.sidebar');
   if (sidebarToggle && sidebar) {
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ===== EMBER PARTICLES =====
+// EMBER PARTICLES 
 (function () {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;

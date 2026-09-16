@@ -10,38 +10,40 @@ return [
 
             'routes' => [
                 /*
-                 * Route for accessing api documentation interface
+                 * Ruta donde queda disponible la interfaz interactiva de la API de VentasFix
                  */
                 'api' => 'api/documentation',
             ],
             'paths' => [
                 /*
-                 * Edit to include full URL in ui for assets
+                 * URL absoluta usada por la UI para cargar sus propios assets (CSS/JS)
                  */
                 'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
 
                 /*
-                * Edit to set path where swagger ui assets should be stored
+                * Carpeta donde se guardan los assets de Swagger UI
                 */
                 'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
 
                 /*
-                 * File name of the generated json documentation file
+                 * Nombre del archivo JSON con la especificación OpenAPI generada de VentasFix
                  */
                 'docs_json' => 'api-docs.json',
 
                 /*
-                 * File name of the generated YAML documentation file
+                 * Nombre del archivo YAML con la especificación OpenAPI generada de VentasFix
                  */
                 'docs_yaml' => 'api-docs.yaml',
 
                 /*
-                 * Set this to `json` or `yaml` to determine which documentation file to use in UI
+                 * Formato que se usa para mostrar la documentación en la UI (json o yaml)
                  */
                 'format_to_use_for_docs' => env('L5_FORMAT_TO_USE_FOR_DOCS', 'json'),
 
                 /*
-                 * Absolute paths to directory containing the swagger annotations are stored.
+                 * Carpeta donde swagger-php escanea los atributos PHP 8 (#[OA\...])
+                 * usados en los controladores de VentasFix, incluyendo
+                 * Api/ProductoApiController, Api/ClienteApiController y Api/UsuarioApiController.
                  */
                 'annotations' => [
                     base_path('app'),
@@ -52,17 +54,19 @@ return [
      'defaults' => [
         'routes' => [
             /*
-             * Route for accessing parsed swagger annotations.
+             * Ruta donde quedan expuestas las anotaciones ya procesadas.
              */
             'docs' => 'docs',
 
             /*
-             * Route for Oauth2 authentication callback.
+             * Ruta de callback para OAuth2. VentasFix no la usa: la autenticación
+             * de la API se maneja con Sanctum (ver 'securitySchemes' más abajo).
              */
             'oauth2_callback' => 'api/oauth2-callback',
 
             /*
-             * Middleware allows to prevent unexpected access to API documentation
+             * Middleware para restringir el acceso a la documentación,
+             * por si en el futuro se quiere proteger /api/documentation.
              */
             'middleware' => [
                 'api' => [],
@@ -72,52 +76,51 @@ return [
             ],
 
             /*
-             * Route Group options
+             * Opciones del grupo de rutas de la documentación.
              */
             'group_options' => [],
         ],
 
         'paths' => [
             /*
-             * Absolute path to location where parsed annotations will be stored
+             * Carpeta donde se guarda la especificación generada
+             * (aquí queda storage/api-docs/api-docs.json de VentasFix)
              */
             'docs' => storage_path('api-docs'),
 
             /*
-             * Absolute path to directory where to export views
+             * Carpeta donde se exportan las vistas de Swagger UI, si se personalizan
              */
             'views' => base_path('resources/views/vendor/l5-swagger'),
 
             /*
-             * Edit to set the api's base path
+             * Base path de la API, si se necesita fijar uno distinto al de la app
              */
             'base' => env('L5_SWAGGER_BASE_PATH', null),
 
             /*
-             * Absolute path to directories that should be excluded from scanning
-             * @deprecated Please use `scanOptions.exclude`
-             * `scanOptions.exclude` overwrites this
+             * Carpetas que se excluyen del escaneo de anotaciones
+             * @deprecated usar `scanOptions.exclude`
              */
             'excludes' => [],
         ],
 
         'scanOptions' => [
             /**
-             * Optional CustomGeneratorInterface implementation that creates an OpenApi\Generator instance.
-             * Use this to provide a custom pre-configured generator.
-             * Accepts an instance or a class name (FQCN) implementing the interface.
+             * Generador personalizado de OpenApi\Generator, si se necesitara reemplazar
+             * el que trae la librería por defecto. VentasFix no lo usa.
              *
              * @see \L5Swagger\CustomGeneratorInterface
              */
             'generator_factory' => null,
 
             /**
-             * Configuration for default processors. Allows to pass processors configuration to swagger-php.
+             * Configuración de los procesadores por defecto de swagger-php.
              *
              * @link https://zircote.github.io/swagger-php/reference/processors.html
              */
             'default_processors_configuration' => [
-            /** Example */
+            /** Ejemplo */
             /**
              * 'operationId.hash' => true,
              * 'pathFilter' => [
@@ -130,25 +133,25 @@ return [
             ],
 
             /**
-             * analyser: defaults to \OpenApi\StaticAnalyser .
+             * Analizador de código: por defecto usa \OpenApi\StaticAnalyser
              *
              * @see \OpenApi\scan
              */
             'analyser' => null,
 
             /**
-             * analysis: defaults to a new \OpenApi\Analysis .
+             * Instancia de análisis: por defecto crea una nueva \OpenApi\Analysis
              *
              * @see \OpenApi\scan
              */
             'analysis' => null,
 
             /**
-             * Custom processors.
+             * Procesadores personalizados adicionales (VentasFix no define ninguno).
              *
-             * Each entry can be:
-             * - A class name or instance (inserted after BuildPaths by default)
-             * - An array with 'class' and 'after' keys for precise positioning:
+             * Cada entrada puede ser:
+             * - Un nombre de clase o instancia (se inserta después de BuildPaths por defecto)
+             * - Un arreglo con las llaves 'class' y 'after' para posicionarlo con precisión:
              *   ['class' => MyProcessor::class, 'after' => SomeProcessor::class]
              *
              * @link https://github.com/zircote/swagger-php/tree/master/Examples/processors/schema-query-parameter
@@ -160,28 +163,32 @@ return [
             ],
 
             /**
-             * pattern: string       $pattern File pattern(s) to scan (default: *.php) .
+             * Patrón de archivos a escanear (por defecto *.php).
              *
              * @see \OpenApi\scan
              */
             'pattern' => null,
 
             /*
-             * Absolute path to directories that should be excluded from scanning
-             * @note This option overwrites `paths.excludes`
+             * Carpetas que se excluyen del escaneo
+             * @note esta opción sobrescribe `paths.excludes`
              * @see \OpenApi\scan
              */
             'exclude' => [],
 
             /*
-             * Allows to generate specs either for OpenAPI 3.0.0 or OpenAPI 3.1.0.
-             * By default the spec will be in version 3.0.0
+             * Versión de la especificación OpenAPI a generar (3.0.0 o 3.1.0).
+             * VentasFix usa la versión por defecto (3.0.0).
              */
             'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', \L5Swagger\Generator::OPEN_API_DEFAULT_SPEC_VERSION),
         ],
 
         /*
-         * API security definitions. Will be generated into documentation file.
+         * Esquema de autenticación de la API de VentasFix (Sanctum).
+         * IMPORTANTE: en el botón "Authorize" de Swagger UI se debe pegar
+         * SOLO el token devuelto por /api/login, sin la palabra "Bearer" adelante,
+         * porque la UI ya la agrega automáticamente. Escribirla dos veces
+         * genera un 401 (ver Bug #3 de la bitácora: "Bearer Bearer").
         */
         'securityDefinitions' => [
             'securitySchemes' => [
@@ -194,7 +201,7 @@ return [
                
             
             /*
-                 * Examples of Security schemes
+                 * Ejemplos de otros esquemas de seguridad (no usados en VentasFix)
                  */
                 /*
                 'api_key_security_example' => [ // Unique name of security
@@ -216,7 +223,7 @@ return [
                 ],
                 */
 
-                /* Open API 3.0 support
+                /* Soporte para Open API 3.0
                 'passport' => [ // Unique name of security
                     'type' => 'oauth2', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'Laravel passport oauth2 security.',
@@ -241,7 +248,7 @@ return [
             ],
             'security' => [
                 /*
-                 * Examples of Securities
+                 * Ejemplos de seguridad (no usados en VentasFix)
                  */
                 [
                     /*
@@ -257,82 +264,83 @@ return [
         ],
 
         /*
-         * Set this to `true` in development mode so that docs would be regenerated on each request
-         * Set this to `false` to disable swagger generation on production
+         * En true, regenera la documentación en cada request (útil en desarrollo).
+         * En producción se deja en false para no perder rendimiento.
          */
         'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', false),
 
         /*
-         * Set this to `true` to generate a copy of documentation in yaml format
+         * En true, además del JSON también genera una copia en formato YAML
          */
         'generate_yaml_copy' => env('L5_SWAGGER_GENERATE_YAML_COPY', false),
 
         /*
-         * Edit to trust the proxy's ip address - needed for AWS Load Balancer
-         * string[]
+         * IP del proxy de confianza, necesario si se despliega detrás de
+         * un balanceador de carga (por ejemplo AWS Load Balancer). No aplica
+         * en el entorno local de VentasFix.
          */
         'proxy' => false,
 
         /*
-         * Configs plugin allows to fetch external configs instead of passing them to SwaggerUIBundle.
-         * See more at: https://github.com/swagger-api/swagger-ui#configs-plugin
+         * Permite cargar configuraciones externas en vez de pasarlas a SwaggerUIBundle.
+         * Ver: https://github.com/swagger-api/swagger-ui#configs-plugin
          */
         'additional_config_url' => null,
 
         /*
-         * Apply a sort to the operation list of each API. It can be 'alpha' (sort by paths alphanumerically),
-         * 'method' (sort by HTTP method).
-         * Default is the order returned by the server unchanged.
+         * Orden de la lista de operaciones de cada endpoint. Puede ser 'alpha'
+         * (alfabético por ruta) o 'method' (por verbo HTTP). VentasFix usa el
+         * orden por defecto que entrega el servidor.
          */
         'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null),
 
         /*
-         * Pass the validatorUrl parameter to SwaggerUi init on the JS side.
-         * A null value here disables validation.
+         * URL del validador que usa Swagger UI. En null, la validación queda deshabilitada.
          */
         'validator_url' => null,
 
         /*
-         * Swagger UI configuration parameters
+         * Parámetros de configuración de la interfaz de Swagger UI
          */
         'ui' => [
             'display' => [
+                /*
+                 * Modo oscuro de la interfaz de Swagger UI
+                 */
                 'dark_mode' => env('L5_SWAGGER_UI_DARK_MODE', false),
                 /*
-                 * Controls the default expansion setting for the operations and tags. It can be :
-                 * 'list' (expands only the tags),
-                 * 'full' (expands the tags and operations),
-                 * 'none' (expands nothing).
+                 * Controla la expansión por defecto de tags y operaciones. Puede ser:
+                 * 'list' (expande solo los tags),
+                 * 'full' (expande tags y operaciones),
+                 * 'none' (no expande nada).
                  */
                 'doc_expansion' => env('L5_SWAGGER_UI_DOC_EXPANSION', 'none'),
 
                 /**
-                 * If set, enables filtering. The top bar will show an edit box that
-                 * you can use to filter the tagged operations that are shown. Can be
-                 * Boolean to enable or disable, or a string, in which case filtering
-                 * will be enabled using that string as the filter expression. Filtering
-                 * is case-sensitive matching the filter expression anywhere inside
-                 * the tag.
+                 * Si está activo, habilita el filtro de operaciones en la barra
+                 * superior de Swagger UI (por ejemplo, para buscar "productos"
+                 * o "clientes" rápidamente entre todos los endpoints).
                  */
                 'filter' => env('L5_SWAGGER_UI_FILTERS', true), // true | false
             ],
 
             'authorization' => [
                 /*
-                 * If set to true, it persists authorization data, and it would not be lost on browser close/refresh
+                 * Si está en true, mantiene el token autorizado aunque se
+                 * recargue o cierre el navegador.
                  */
                 'persist_authorization' => env('L5_SWAGGER_UI_PERSIST_AUTHORIZATION', false),
 
                 'oauth2' => [
                     /*
-                     * If set to true, adds PKCE to AuthorizationCodeGrant flow
+                     * Agrega PKCE al flujo de Authorization Code Grant (no usado en VentasFix)
                      */
                     'use_pkce_with_authorization_code_grant' => false,
                 ],
             ],
         ],
         /*
-         * Constants which can be used in annotations
+         * Constantes que se pueden usar dentro de las anotaciones/atributos
          */
         'constants' => [
             'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),

@@ -19,7 +19,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * Get the attributes that should be cast.
+     * Get el nombre completo del usuario concatenando el nombre y apellido
      *
      * @return array<string, string>
      */

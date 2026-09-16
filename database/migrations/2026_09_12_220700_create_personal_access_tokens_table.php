@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * crear la tabla de tokens de acceso personal
      */
     public function up(): void
     {
@@ -24,7 +24,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir la migración y eliminar la tabla de tokens de acceso personal
      */
     public function down(): void
     {
