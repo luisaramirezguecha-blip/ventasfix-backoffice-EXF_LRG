@@ -29,8 +29,8 @@ class ProductoController extends Controller
             'descripcion_corta' => 'required|string|max:255',
             'descripcion_larga' => 'required|string',
             'imagen_url' => 'nullable|url',
-            'imagen_archivo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048|required_without:imagen_url',
-            'precio_neto' => 'required|numeric|min:0',
+            'imagen_archivo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'precio_neto' => 'required|integer|min:0',
             'stock_actual' => 'required|integer|min:0',
             'stock_minimo' => 'required|integer|min:0',
             'stock_bajo' => 'required|integer|min:0',
@@ -46,13 +46,14 @@ class ProductoController extends Controller
             $datosProducto['imagen'] = $request->input('imagen_url');
         }
 
-        // IVA 19% — requisito del enunciado
-        $datosProducto['precio_venta'] = round($datosProducto['precio_neto'] * 1.19, 2);
+        // IVA 19% — requisito del enunciado. CLP no usa decimales.
+        $datosProducto['precio_venta'] = (int) round($datosProducto['precio_neto'] * 1.19);
 
         Producto::create($datosProducto);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
+
     // Mostrar un producto por su ID
     public function show(Producto $producto)
     {
@@ -73,17 +74,31 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion_corta' => 'required|string|max:255',
             'descripcion_larga' => 'required|string',
-            'imagen' => 'required|string',
-            'precio_neto' => 'required|numeric|min:0',
+            'imagen_url' => 'nullable|url',
+            'imagen_archivo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'precio_neto' => 'required|integer|min:0',
             'stock_actual' => 'required|integer|min:0',
             'stock_minimo' => 'required|integer|min:0',
             'stock_bajo' => 'required|integer|min:0',
             'stock_alto' => 'required|integer|min:0',
         ]);
 
-        $validated['precio_venta'] = round($validated['precio_neto'] * 1.19, 2);
+        // Nos quedamos solo con los datos validados, sin los campos auxiliares de imagen
+        $datosProducto = collect($validated)->except(['imagen_archivo', 'imagen_url'])->toArray();
 
-        $producto->update($validated);
+        // Solo tocamos la imagen si el usuario subió un archivo nuevo o puso una URL nueva.
+        // Si no hizo nada, se conserva la imagen que ya tenía el producto (esto es lo que
+        // arregla el bug: antes 'imagen' era un campo de texto editable a mano).
+        if ($request->hasFile('imagen_archivo')) {
+            $datosProducto['imagen'] = $request->file('imagen_archivo')->store('productos', 'public');
+        } elseif ($request->filled('imagen_url')) {
+            $datosProducto['imagen'] = $request->input('imagen_url');
+        }
+
+        // IVA 19% — requisito del enunciado. CLP no usa decimales.
+        $datosProducto['precio_venta'] = (int) round($datosProducto['precio_neto'] * 1.19);
+
+        $producto->update($datosProducto);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
     }

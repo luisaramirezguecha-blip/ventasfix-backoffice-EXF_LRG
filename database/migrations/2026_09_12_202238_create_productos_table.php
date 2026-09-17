@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('descripcion_corta');
             $table->text('descripcion_larga');
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
             $table->decimal('precio_neto', 10, 2);
             $table->decimal('precio_venta', 10, 2);
             $table->integer('stock_actual');

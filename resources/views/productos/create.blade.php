@@ -9,11 +9,8 @@
             <x-molecules.field label="Descripción corta" name="descripcion_corta" :value="old('descripcion_corta')" />
             <x-molecules.field label="Descripción larga" name="descripcion_larga" type="textarea" :value="old('descripcion_larga')" />
             
-            <!-- Opción B: Seleccionar archivo directamente del dispositivo -->
-            <div class="field-group">
-                <label class="field-label"> Seleccionar imagen desde el dispositivo</label>
-                <input type="file" name="imagen_archivo" accept="image/*" class="field-input">
-            </div>
+         <!-- Imagen del producto: se guarda como URL -->
+            <x-molecules.field label="URL de la imagen" name="imagen_url" :value="old('imagen_url')" />
 
             <x-molecules.field label="Precio neto" name="precio_neto" type="number" :value="old('precio_neto')" />
             <x-molecules.field label="Stock actual" name="stock_actual" type="number" :value="old('stock_actual')" />
